@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1015686276797",
+    "project_id": "vertical-d7282",
+    "storage_bucket": "vertical-d7282.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015686276797:android:3a73a2705345d7ff9039d4",
+        "android_client_info": {
+          "package_name": "com.example.vertical_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015686276797-8mvrnkqdbf7i22nsgdrg0mokbk19euig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyHfIu0tCPac5umGEDcsomG6TJvTnP3Q8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015686276797-8mvrnkqdbf7i22nsgdrg0mokbk19euig.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1015686276797-torn9bjiuamsolgil3rljq32mlu9ob0l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.verticalFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
