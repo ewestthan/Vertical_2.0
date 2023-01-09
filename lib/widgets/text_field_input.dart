@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertical_flutter/utils/colors.dart';
 
 class TextFieldInput extends StatelessWidget {
   final TextEditingController textEditingController;
@@ -45,6 +46,7 @@ class TextFieldInput extends StatelessWidget {
         filled: true,
         contentPadding: const EdgeInsets.all(15),
       ),
+      cursorColor: purpleColor,
       keyboardType: textInputType,
       obscureText: isPass,
     );

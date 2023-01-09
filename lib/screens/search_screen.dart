@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:vertical_flutter/screens/user_profile_screen.dart';
 import 'package:vertical_flutter/utils/colors.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -89,26 +90,34 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     itemCount: (snapshot.data! as dynamic).docs.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        dense: true,
-                        visualDensity: VisualDensity(vertical: -2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            (snapshot.data! as dynamic).docs[index]['photoUrl'],
+                      return InkWell(
+                        child: ListTile(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => UserProfileScreen(
+                                      uid: (snapshot.data! as dynamic)
+                                          .docs[index]['uid']))),
+                          dense: true,
+                          visualDensity: VisualDensity(vertical: -2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
                           ),
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              (snapshot.data! as dynamic).docs[index]
+                                  ['photoUrl'],
+                            ),
+                          ),
+                          title: Text(
+                            (snapshot.data! as dynamic).docs[index]['username'],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            "Area",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          tileColor: purpleColor.withOpacity(0.6),
                         ),
-                        title: Text(
-                          (snapshot.data! as dynamic).docs[index]['username'],
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          "Area",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        tileColor: purpleColor.withOpacity(0.6),
                       );
                     },
                   );

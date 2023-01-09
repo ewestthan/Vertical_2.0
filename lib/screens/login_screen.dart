@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vertical_flutter/resources/auth_methods.dart';
 import 'package:vertical_flutter/screens/signup_screen.dart';
+import 'package:vertical_flutter/utils/global_variables.dart';
 import 'package:vertical_flutter/utils/utils.dart';
 import 'package:vertical_flutter/widgets/text_field_input.dart';
 import 'package:vertical_flutter/utils/colors.dart';
@@ -70,7 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: MediaQuery.of(context).size.width > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 3)
+              : const EdgeInsets.symmetric(horizontal: 32),
+          width: double.infinity,
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -79,7 +84,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 purpleColor,
                 mobileBackgroundColor,
               ])),
-          width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
