@@ -237,7 +237,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ],
                         ),
                         SizedBox(
-                          height: 300,
+                          height: MediaQuery.of(context).size.height / 2,
                           child: TabBarView(
                             children: <Widget>[
                               Center(
@@ -254,14 +254,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       );
                                     }
                                     return GridView.builder(
-                                      shrinkWrap: true,
+                                      shrinkWrap: false,
+                                      primary: false,
                                       itemCount: (snapshot.data! as dynamic)
                                           .docs
                                           .length,
                                       gridDelegate:
                                           const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
-                                        crossAxisSpacing: 5,
+                                        crossAxisSpacing: 1.5,
                                         mainAxisSpacing: 1.5,
                                         childAspectRatio: 1,
                                       ),
@@ -282,8 +283,131 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   },
                                 ),
                               ),
-                              Center(child: Text('climbs')),
-                              Center(child: Text('areas')),
+                              Center(
+                                child: FutureBuilder(
+                                  future: FirebaseFirestore.instance
+                                      .collection('posts')
+                                      .where('uid', isEqualTo: widget.uid)
+                                      .orderBy('grade', descending: true)
+                                      .orderBy('date', descending: true)
+                                      .get(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    return ListView.separated(
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(
+                                        height: 10,
+                                      ),
+                                      itemCount: (snapshot.data! as dynamic)
+                                          .docs
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot snap =
+                                            (snapshot.data! as dynamic)
+                                                .docs[index];
+                                        num previousGrade = 0;
+                                        if (previousGrade != snap['grade']) {
+                                          previousGrade = snap['grade'];
+                                          return Column(
+                                            children: [
+                                              ListTile(
+                                                dense: true,
+                                                visualDensity:
+                                                    VisualDensity(vertical: -2),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                ),
+                                                title: Text(
+                                                  'V' +
+                                                      snap['grade'].toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: purpleColor),
+                                                ),
+                                                tileColor: Colors.black,
+                                              ),
+                                              InkWell(
+                                                child: ListTile(
+                                                  onTap: () => {},
+                                                  // Navigator.of(context)
+                                                  //     .push(MaterialPageRoute(
+                                                  //         builder: (context) =>
+                                                  //             UserProfileScreen(
+                                                  //                 uid: (snapshot.data!
+                                                  //                             as dynamic)
+                                                  //                         .docs[index]
+                                                  //                     ['uid']))),
+                                                  dense: true,
+                                                  visualDensity: VisualDensity(
+                                                      vertical: -2),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            25),
+                                                  ),
+                                                  title: Text(
+                                                    snap['username'] +
+                                                        " V" +
+                                                        snap['grade']
+                                                            .toString(),
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                  subtitle: Text(
+                                                    snap['username'],
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  ),
+                                                  tileColor: purpleColor
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        } else {
+                                          return InkWell(
+                                            child: ListTile(
+                                              onTap: () => {},
+                                              // Navigator.of(context)
+                                              //     .push(MaterialPageRoute(
+                                              //         builder: (context) =>
+                                              //             UserProfileScreen(
+                                              //                 uid: (snapshot.data!
+                                              //                             as dynamic)
+                                              //                         .docs[index]
+                                              //                     ['uid']))),
+                                              dense: true,
+                                              visualDensity:
+                                                  VisualDensity(vertical: -2),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
+                                              ),
+                                              title: Text(
+                                                snap['climbName'],
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              subtitle: Text(
+                                                snap['areaName'],
+                                                style: TextStyle(fontSize: 12),
+                                              ),
+                                              tileColor:
+                                                  purpleColor.withOpacity(0.6),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Center(child: Text('About')),
                             ],
                           ),
                         ),
