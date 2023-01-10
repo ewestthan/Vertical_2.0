@@ -208,41 +208,88 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
                 const Divider(),
-                FutureBuilder(
-                  future: FirebaseFirestore.instance
-                      .collection('posts')
-                      .where('uid', isEqualTo: widget.uid)
-                      .get(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: (snapshot.data! as dynamic).docs.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 1.5,
-                        childAspectRatio: 1,
-                      ),
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot snap =
-                            (snapshot.data! as dynamic).docs[index];
-
-                        return Container(
-                          child: Image(
-                            image: NetworkImage(
-                              snap['postUrl'],
+                DefaultTabController(
+                  length: 3,
+                  child: Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        TabBar(
+                          padding: EdgeInsets.only(bottom: 10),
+                          indicator: ShapeDecoration(
+                            shape: Border(
+                              bottom: BorderSide(
+                                width: 3.0,
+                                color: purpleColor,
+                                style: BorderStyle.solid,
+                              ), //BorderSide
                             ),
                           ),
-                        );
-                      },
-                    );
-                  },
+                          tabs: <Widget>[
+                            Tab(
+                              child: Text('Videos'),
+                            ),
+                            Tab(
+                              child: Text('Ascents'),
+                            ),
+                            Tab(
+                              child: Text('About'),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 300,
+                          child: TabBarView(
+                            children: <Widget>[
+                              Center(
+                                child: FutureBuilder(
+                                  future: FirebaseFirestore.instance
+                                      .collection('posts')
+                                      .where('uid', isEqualTo: widget.uid)
+                                      .get(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    return GridView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: (snapshot.data! as dynamic)
+                                          .docs
+                                          .length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 1.5,
+                                        childAspectRatio: 1,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot snap =
+                                            (snapshot.data! as dynamic)
+                                                .docs[index];
+
+                                        return Container(
+                                          child: Image(
+                                            image: NetworkImage(
+                                              snap['postUrl'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              Center(child: Text('climbs')),
+                              Center(child: Text('areas')),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
